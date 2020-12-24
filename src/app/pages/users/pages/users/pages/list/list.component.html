@@ -1,0 +1,42 @@
+<div class="G-flex-center-between G-mb-20px">
+  <h2>Total: 32856</h2>
+  <a [routerLink]="['','users', 'users', ManageTypesEnum.Add]" nz-button nzType="primary">Add</a>
+</div>
+<nz-table #nzTable [nzData]="list$ | async" nzShowSizeChanger nzShowPagination>
+  <thead>
+  <tr>
+    <th
+      *ngFor="let column of helperService.listOfColumn"
+      [nzSortFn]="column.compare"
+      [nzSortPriority]="column.priority"
+      [nzWidth]="column.width">
+      {{ column.title }}
+    </th>
+    <th [nzWidth]="helperService.actions.width" class="G-min-w-200px G-flex-justify-between G-flex-align-center">
+      Actions
+      <button nz-button nzType="default"><i nz-icon nzType="reload" nzTheme="outline"></i>Reset</button>
+    </th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr *ngFor="let user of nzTable.data">
+    <td>{{ user.role.name }}</td>
+    <td>{{ user.fullName }}</td>
+    <td class="P-actions G-flex-justify-between">
+      <button nz-button nzType="primary" [routerLink]="['','users', 'users', ManageTypesEnum.Preview, user.id]">
+        Preview
+      </button>
+      <button nz-button nzType="default" [routerLink]="['','users', 'users', ManageTypesEnum.Edit, user.id]">Edit
+      </button>
+      <button
+        nzPopconfirmPlacement="right"
+        nzPopconfirmTitle="Are you sure delete this active code range?"
+        nz-popconfirm nz-button nzType="default"
+        nzDanger
+        (nzOnConfirm)="deleteReturnedCodeRange(user.id)">
+        Delete
+      </button>
+    </td>
+  </tr>
+  </tbody>
+</nz-table>

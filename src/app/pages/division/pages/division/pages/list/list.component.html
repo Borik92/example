@@ -1,0 +1,83 @@
+<div class="G-flex-center-between G-mb-20px">
+  <h2>Total: 32856</h2>
+  <a [appPermission]="[PermissionsEnum.CreateUpdateDivision]"
+     [routerLink]="['','division', 'division', ManageTypesEnum.Add]" nz-button nzType="primary">Add</a>
+</div>
+<nz-table #nzTable [nzData]="list$ | async" nzShowSizeChanger nzShowPagination>
+  <thead>
+  <tr>
+    <th nzCustomFilter>
+      {{ helperService.listOfColumn.name.title }}
+      <nz-filter-trigger [(nzVisible)]="visibleNameFilter" [nzActive]="divisionService.filterName.length > 0"
+                         [nzDropdownMenu]="nameFilter">
+        <i nz-icon nzType="search"></i>
+      </nz-filter-trigger>
+    </th>
+    <th>
+      {{ helperService.listOfColumn.type.title }}
+    </th>
+    <th nzCustomFilter>
+      {{ helperService.listOfColumn.address.title }}
+      <nz-filter-trigger [(nzVisible)]="visibleAddressFilter" [nzActive]="divisionService.filterAddress.length > 0"
+                         [nzDropdownMenu]="addressFilter">
+        <i nz-icon nzType="search"></i>
+      </nz-filter-trigger>
+    </th>
+    <th [nzWidth]="helperService.actions.width" class=" G-flex-justify-between G-flex-align-center">
+      Actions
+      <button nz-button nzType="default" (click)="divisionService.resetAllFilters();initializeValues()">
+        <i nz-icon nzType="reload" nzTheme="outline"></i>
+        Reset
+      </button>
+    </th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr *ngFor="let division of nzTable.data">
+    <td>{{ division.name }}</td>
+    <td>{{ division.divisionType.name }}</td>
+    <td>{{ division.address }}</td>
+    <td class="P-actions G-flex-justify-end">
+      <button nz-button nzType="primary"
+              [routerLink]="['','division', 'division', ManageTypesEnum.Preview, division.id]">Preview
+      </button>
+      <button nz-button nzType="default" [appPermission]="[PermissionsEnum.CreateUpdateDivision]"
+              [routerLink]="['','division', 'division', ManageTypesEnum.Edit, division.id]">Edit
+      </button>
+      <button
+        [appPermission]="[PermissionsEnum.DeleteDivision]"
+        nzPopconfirmPlacement="right"
+        nzPopconfirmTitle="Are you sure delete this active code range?"
+        nz-popconfirm nz-button nzType="default"
+        nzDanger
+        (nzOnConfirm)="deleteDivision(division.id)">
+        Delete
+      </button>
+    </td>
+  </tr>
+  </tbody>
+</nz-table>
+
+<nz-dropdown-menu #nameFilter="nzDropdownMenu">
+  <div class="ant-table-filter-dropdown">
+    <div class="P-search-box">
+      <input type="text" nz-input placeholder="Search name" [(ngModel)]="divisionService.filterName"/>
+      <button nz-button nzSize="small" nzType="primary" (click)="initializeValues()" class="search-button">
+        Search
+      </button>
+      <button nz-button nzSize="small" (click)="divisionService.filterName = '';initializeValues()">Reset</button>
+    </div>
+  </div>
+</nz-dropdown-menu>
+
+<nz-dropdown-menu #addressFilter="nzDropdownMenu">
+  <div class="ant-table-filter-dropdown">
+    <div class="P-search-box">
+      <input type="text" nz-input placeholder="Search name" [(ngModel)]="divisionService.filterAddress"/>
+      <button nz-button nzSize="small" nzType="primary" (click)="initializeValues()" class="search-button">
+        Search
+      </button>
+      <button nz-button nzSize="small" (click)="divisionService.filterAddress = '';initializeValues()">Reset</button>
+    </div>
+  </div>
+</nz-dropdown-menu>

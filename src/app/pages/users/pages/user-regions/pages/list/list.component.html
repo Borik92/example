@@ -1,0 +1,88 @@
+<div class="P-manage-actions">
+  <button [appPermission]="[PermissionsEnum.CreateUserRegion]" nz-button nzType="primary" [routerLink]="['../add']"><i
+    nz-icon nzType="plus-circle" nzTheme="outline"></i>Add
+  </button>
+</div>
+
+<nz-table
+  #nzTable
+  [nzData]="list$ | async"
+  nzShowSizeChanger
+  nzShowPagination>
+  <thead>
+  <tr>
+    <th
+      nzCustomFilter
+      [nzFilterFn]="helperService.listOfColumn.name.search"
+      [nzSortPriority]="helperService.listOfColumn.name.priority"
+      [nzSortFn]="helperService.listOfColumn.name.compare">
+      {{ helperService.listOfColumn.name.title }}
+      <nz-filter-trigger
+        *ngIf="helperService.listOfColumn.name.search"
+        [nzVisible]="false"
+        [nzActive]="!!nameValue"
+        [nzDropdownMenu]="menuName">
+        <i nz-icon nzType="search"></i>
+      </nz-filter-trigger>
+    </th>
+    <th
+      nzCustomFilter
+      [nzFilterFn]="helperService.listOfColumn.description.search"
+      [nzSortPriority]="helperService.listOfColumn.description.priority"
+      [nzSortFn]="helperService.listOfColumn.description.compare">
+      {{ helperService.listOfColumn.description.title }}
+      <nz-filter-trigger
+        *ngIf="helperService.listOfColumn.description.search"
+        [nzVisible]="false"
+        [nzActive]="!!idValue"
+        [nzDropdownMenu]="menuId">
+        <i nz-icon nzType="search"></i>
+      </nz-filter-trigger>
+    </th>
+    <th [nzWidth]="helperService.listOfColumn.actions.width" class="G-flex-justify-between G-flex-align-center">
+      Actions
+      <button nz-button nzType="default" (click)="resetAllFilters()"><i nz-icon nzType="reload" nzTheme="outline"></i>Reset
+      </button>
+    </th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr *ngFor="let region of nzTable.data">
+    <td>{{ region.name }}</td>
+    <td>{{ region.description }}</td>
+    <td class="P-actions">
+      <button nz-button nzType="primary"
+              [routerLink]="['', 'users', 'user-regions', ManageTypesEnum.Preview, region.id]">Preview
+      </button>
+      <button nz-button nzType="default" [routerLink]="['', 'users', 'user-regions', ManageTypesEnum.Edit, region.id]">
+        Edit
+      </button>
+      <button nz-button nzType="default" nzDanger (click)="deleteUserRegion(region.id)">Delete</button>
+    </td>
+  </tr>
+  </tbody>
+</nz-table>
+
+<nz-dropdown-menu #menuId="nzDropdownMenu">
+  <div class="ant-table-filter-dropdown">
+    <div class="P-search-box">
+      <input [type]="helperService.listOfColumn.description.inputType" nz-input placeholder="Search name"/>
+      <button nz-button nzSize="small" nzType="primary" (click)="getList()" class="search-button">
+        Search
+      </button>
+      <button nz-button nzSize="small" (click)="idValue = '';getList()">Reset</button>
+    </div>
+  </div>
+</nz-dropdown-menu>
+
+<nz-dropdown-menu #menuName="nzDropdownMenu">
+  <div class="ant-table-filter-dropdown">
+    <div class="P-search-box">
+      <input [type]="helperService.listOfColumn.name.inputType" nz-input placeholder="Search name"/>
+      <button nz-button nzSize="small" nzType="primary" (click)="getList()" class="search-button">
+        Search
+      </button>
+      <button nz-button nzSize="small" (click)="nameValue = '';getList()">Reset</button>
+    </div>
+  </div>
+</nz-dropdown-menu>

@@ -1,0 +1,83 @@
+<nz-table #sortTable
+          [nzData]="notificationsList$ | async"
+          [nzScroll]="{ x: tableMaxWidth + 'px' }"
+          nzShowPagination
+          nzShowSizeChanger
+          nzTableLayout="fixed">
+  <thead>
+  <tr>
+    <th nzCustomFilter [nzWidth]="helperService.from.width">
+      {{ helperService.from.title }}
+      <nz-filter-trigger
+        [(nzVisible)]="visibleUpdatedByFilter"
+        [nzActive]="notificationsService.filterUpdatedBy.length > 0"
+        [nzDropdownMenu]="updatedByFilter">
+        <i nz-icon nzType="search"></i>
+      </nz-filter-trigger>
+    </th>
+    <th [nzWidth]="helperService.orderId.width">{{ helperService.orderId.title }}</th>
+    <th [nzWidth]="helperService.status.width">{{ helperService.status.title }}</th>
+    <th [nzWidth]="helperService.actionDate.width" [nzSortOrder]="sort" (nzSortOrderChange)="sortByActionDate($event)">
+      {{ helperService.actionDate.title }}
+    </th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr *ngFor="let notification of sortTable.data">
+    <td>{{ notification.updatedBy.fullName }}</td>
+    <td>{{ notification.order.quantity }}</td>
+    <td>
+      <nz-tag nzColor="#{{notification.order.status.color}}">{{notification.order.status.name}}</nz-tag>
+      <i *ngIf="notification.order.status.ordering === OrderStatusOrderingEnum.Rejected"
+         nz-tooltip [nzTooltipTitle]="notification.order.comment"
+         nz-icon nzType="info-circle" nzTheme="outline">
+      </i>
+    </td>
+    <td>{{ notification.updatedAt.date | date: helperService.dateFormat }}</td>
+  </tr>
+  </tbody>
+</nz-table>
+
+
+<nz-dropdown-menu #updatedByFilter="nzDropdownMenu">
+  <div class="ant-table-filter-dropdown">
+
+    <div class="P-search-box">
+      <input type="text" nz-input placeholder="Search name" [(ngModel)]="notificationsService.filterUpdatedBy"/>
+      <button nz-button nzSize="small" nzType="primary" (click)="initializeValues()" class="search-button">
+        Search
+      </button>
+      <button nz-button nzSize="small" (click)="notificationsService.filterUpdatedBy = null;initializeValues()">
+        Reset
+      </button>
+    </div>
+  </div>
+</nz-dropdown-menu>
+
+<nz-dropdown-menu #orderRequestIdFilter="nzDropdownMenu">
+  <div class="ant-table-filter-dropdown">
+    <div class="P-search-box">
+      <input type="text" nz-input placeholder="Search name" [(ngModel)]="notificationsService.filterOrderRequestId"/>
+      <button nz-button nzSize="small" nzType="primary" (click)="initializeValues()" class="search-button">
+        Search
+      </button>
+      <button nz-button nzSize="small" (click)="notificationsService.filterOrderRequestId = null;initializeValues()">
+        Reset
+      </button>
+    </div>
+  </div>
+</nz-dropdown-menu>
+
+<nz-dropdown-menu #updatedByFilter="nzDropdownMenu">
+  <div class="ant-table-filter-dropdown">
+    <div class="P-search-box">
+      <input type="text" nz-input placeholder="Search name" [(ngModel)]="notificationsService.filterStatusId"/>
+      <button nz-button nzSize="small" nzType="primary" (click)="initializeValues()" class="search-button">
+        Search
+      </button>
+      <button nz-button nzSize="small" (click)="notificationsService.filterUpdatedBy = null;initializeValues()">
+        Reset
+      </button>
+    </div>
+  </div>
+</nz-dropdown-menu>

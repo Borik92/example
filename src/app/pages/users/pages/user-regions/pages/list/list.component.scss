@@ -1,0 +1,35 @@
+@import "variables";
+
+.P-manage-actions {
+  margin-bottom: $app-margin;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.P-search-box {
+  padding: 8px;
+}
+
+.P-search-box input {
+  width: 188px;
+  margin-bottom: 8px;
+  display: block;
+}
+
+.P-search-box button {
+  width: 90px;
+}
+
+.search-button {
+  margin-right: 8px;
+}
+
+.P-actions {
+  button {
+    margin-left: $app-margin;
+
+    &:first-child {
+      margin-left: 0;
+    }
+  }
+}

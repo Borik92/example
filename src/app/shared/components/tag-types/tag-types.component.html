@@ -1,0 +1,4 @@
+<ng-container [ngSwitch]="type">
+  <nz-tag *ngSwitchCase="OrdersStatusTypesEnum.Shipped" nzColor="#ddd">success</nz-tag>
+  <nz-tag *ngSwitchCase="OrdersStatusTypesEnum.InProgress" nzColor="processing">processing</nz-tag>
+</ng-container>

@@ -1,0 +1,62 @@
+<div class="P-container">
+  <div class="P-card">
+    <div class="P-logo-section">
+      <img src="assets/images/logo.png">
+      <div class="P-logo-text">
+        <h4>Login to your account</h4>
+        <span>Your credentials</span>
+      </div>
+    </div>
+    <div class="P-form-section">
+
+      <form nz-form [formGroup]="validateForm" class="P-login-form" (ngSubmit)="login()">
+        <nz-form-item>
+          <nz-form-control [nzErrorTip]="emailErrorText">
+            <nz-input-group nzPrefixIcon="user">
+              <input type="text" nz-input formControlName="emailAddress" placeholder="Email Address"/>
+            </nz-input-group>
+          </nz-form-control>
+          <ng-template #emailErrorText let-control>
+            <ng-container *ngIf="emailAddress.errors?.required">
+              Please input your email address!
+            </ng-container>
+            <ng-container *ngIf="emailAddress.errors?.pattern">
+              Please input valid email address!
+            </ng-container>
+          </ng-template>
+        </nz-form-item>
+        <nz-form-item>
+          <nz-form-control [nzErrorTip]="passwordErrorText">
+            <nz-input-group nzPrefixIcon="lock" [nzSuffix]="suffixTemplate">
+              <input
+                [type]="passwordVisible ? 'text' : 'password'"
+                nz-input
+                formControlName="password"
+                placeholder="Password"/>
+            </nz-input-group>
+            <ng-template #suffixTemplate>
+              <i nz-icon [nzType]="passwordVisible ? 'eye-invisible' : 'eye'"
+                 (click)="passwordVisible = !passwordVisible"></i>
+            </ng-template>
+          </nz-form-control>
+          <ng-template #passwordErrorText let-control>
+            <ng-container *ngIf="password.errors?.required">
+              Please input your password!
+            </ng-container>
+            <ng-container *ngIf="password.errors?.minlength">
+              Password must be at least 6 character
+            </ng-container>
+          </ng-template>
+        </nz-form-item>
+
+        <button
+          nz-button
+          class="P-login-form-button P-login-form-margin"
+          [disabled]="isSubmitting$ | async"
+          [nzType]="'primary'">
+            Log in
+        </button>
+      </form>
+    </div>
+  </div>
+</div>

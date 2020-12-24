@@ -1,0 +1,58 @@
+<nz-page-header nzTitle="Describe product" [nzBackIcon]="manageType === ManageTypesEnum.Preview">
+  <nz-page-header-title>Describe product</nz-page-header-title>
+</nz-page-header>
+
+<form nz-form [nzLayout]="'vertical'" [formGroup]="form.formGroup" (ngSubmit)="submitForm()">
+  <div class="G-flex-align-center G-flex-wrap">
+    <div class="G-flex G-w-100p G-flex-wrap">
+      <div class="G-w-100p G-flex-justify-between">
+        <div class="G-w-48p G-flex-justify-between G-column">
+          <nz-form-item class="P-form-item G-min-w-150px G-w-100p G-mr-20px">
+            <nz-form-label class="P-form-label" nzRequired nzFor="name">
+              <span class="G-cursor">Name</span>
+            </nz-form-label>
+            <nz-form-control>
+              <input nz-input id="name" formControlName="name">
+            </nz-form-control>
+          </nz-form-item>
+
+          <nz-form-item class="P-form-item G-min-w-150px G-w-100p G-mr-20px">
+            <nz-form-label class="P-form-label" nzRequired nzFor="description">
+              <span class="G-cursor">Description</span>
+            </nz-form-label>
+            <nz-form-control>
+              <input nz-input id="description" formControlName="description">
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+
+        <div class="G-w-48p G-flex-justify-between">
+          <nz-form-item class="P-form-item G-min-w-150px G-w-100p G-mr-20px">
+            <nz-form-label class="P-form-label" nzRequired>Permissions</nz-form-label>
+            <nz-select nzMode="multiple" nzPlaceHolder="Select a serie" formControlName="permissionIds">
+              <nz-option
+                *ngFor="let permission of permissionsList$ | async"
+                [nzValue]="permission.id"
+                [nzLabel]="permission.name">
+              </nz-option>
+            </nz-select>
+          </nz-form-item>
+        </div>
+      </div>
+    </div>
+  </div>
+</form>
+
+<div class="G-flex-align-center G-flex-justify-end P-actions" *ngIf="!router.url.includes('preview')">
+  <div class="G-flex-justify-end">
+    <button nz-button [routerLink]="['', 'users', 'roles',  'list']">Cancel</button>
+    <button
+      nz-button
+      nzType="primary"
+      class="G-ml-5px"
+      [disabled]="form.formGroup.invalid"
+      (click)="submitForm()">
+      {{ manageType === ManageTypesEnum.Add ? 'Add' : 'Edit' }}
+    </button>
+  </div>
+</div>

@@ -1,0 +1,45 @@
+<div class="G-flex-center-between G-mb-20px">
+  <h2>Total: 32856</h2>
+  <a [appPermission]="[PermissionsEnum.CreateUpdateRole]" [routerLink]="['','users', 'roles', ManageTypesEnum.Add]"
+     nz-button nzType="primary">Add</a>
+</div>
+<nz-table
+  #nzTable
+  [nzData]="list$ | async"
+  nzShowSizeChanger
+  nzShowPagination>
+  <thead>
+  <tr>
+    <th
+      *ngFor="let column of helperService.listOfColumn">
+      {{ column.title }}
+    </th>
+    <th [nzWidth]="helperService.actions.width" class="G-min-w-200px G-flex-justify-between G-flex-align-center">
+      Actions
+      <button nz-button nzType="default"><i nz-icon nzType="reload" nzTheme="outline"></i>Reset</button>
+    </th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr *ngFor="let role of nzTable.data">
+    <td>{{ role.name }}</td>
+    <td class="P-actions G-flex-justify-between">
+      <button nz-button nzType="primary" [routerLink]="['','users', 'roles', ManageTypesEnum.Preview, role.id]">
+        Preview
+      </button>
+      <button nz-button nzType="default" [appPermission]="[PermissionsEnum.CreateUpdateRole]"
+              [routerLink]="['','users', 'roles', ManageTypesEnum.Edit, role.id]">Edit
+      </button>
+      <button
+        [appPermission]="[PermissionsEnum.DeleteRole]"
+        nzPopconfirmPlacement="right"
+        nzPopconfirmTitle="Are you sure delete this active code range?"
+        nz-popconfirm nz-button nzType="default"
+        nzDanger
+        (nzOnConfirm)="deleteReturnedCodeRange(role.id)">
+        Delete
+      </button>
+    </td>
+  </tr>
+  </tbody>
+</nz-table>
